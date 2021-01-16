@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toontown Cog XP Calculator</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.0/normalize.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="images/favicon.ico"/> <!-- add this-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="calculator.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- top nav bar -->
+        <div id="navigation"></div>
+        <script>
+            $(function(){
+                $('#navigation').load('cog_hq_nav.html');
+            });
+        </script>
+        <!-- form (input) -->
+        <h1>Sellbot HQ</h1>
+        <form id="xp_calculator">
+            <div class="form-group">
+                <label for="xpTotal">How many <b>total</b> Merits do you need for promotion?</label><br>
+                <input type="number" name="xpTotal" id="xpTotal" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>How many Merits do you currently have?</label><br>
+                <input type="number" name="xpHas" id="xpHas" class="form-control"><br>
+            </div>
+                <input type="submit" class="btn btn-primary" value="Calculate!">
+        </form>
+        <br><br>
+        <!-- result (output) -->
+        <div class="card">
+            <div class="card-body">
+                <p id="result">Waiting on user input...</p>
+            </div>
+        </div>
+        <!-- processing -->
+        <script>
+            var form = document.getElementById('xp_calculator');
+            form.onsubmit = function(event) {
+                event.preventDefault();
+
+                var cog_type = 'sellbot';
+                var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
+
+                let factories = calculateInstances(cog_type, xpNeeds);
+                var longs = factories[0];
+                var shorts = factories[1];
+
+                var result = document.getElementById('result');
+                result.innerHTML = 'You are <b>' + xpNeeds + ' Merits</b> from promotion.<br><br>';
+
+                if (xpNeeds > 0) {
+                    result.innerHTML += 'You need ';
+
+                    if (longs > 1) {
+                        result.innerHTML += '<b>' + longs + ' long Factories</b>';
+                    }
+                    else if (longs == 1) {
+                        result.innerHTML += '<b>' + longs + ' long Factory</b>';
+                    }
+
+                    if (longs > 0 && shorts > 0) {
+                        result.innerHTML += ' and ';
+                    }
+
+                    if (shorts > 1) {
+                        result.innerHTML += '<b>' + shorts + ' short Factories</b>';
+                    }
+                    else if (shorts == 1) {
+                        result.innerHTML += '<b>' + shorts + ' short Factory</b>';
+                    }
+
+                    result.innerHTML += '.';
+                }
+                else {
+                    result.innerHTML += 'Don\'t be a turkey!'
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Toontown Cog XP Calculator</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.0/normalize.css" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="images/favicon.ico"/> <!-- add this-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="calculator.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- top nav bar -->
+        <div id="navigation"></div>
+        <script>
+            $(function(){
+                $('#navigation').load('cog_hq_nav.html');
+            });
+        </script>
+        <!-- form (input) -->
+        <h1>Cashbot HQ</h1>
+        <p><b>Note:</b> Due to Cashbot Mints rewarding an inconsistent number of Cogbucks per run, the program may not be able to determine exactly how many Mints you will need. In these cases, it will output a list of the minimum and maximum number of possible Mints. For the most accurate results, re-submit the form with updated numbers after <i>each</i> Mint.</p><br>
+        <form id="xp_calculator">
+            <div class="form-group">
+                <label for="xpTotal">How many <b>total</b> Cogbucks do you need for promotion?</label><br>
+                <input type="number" name="xpTotal" id="xpTotal" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>How many Cogbucks do you currently have?</label><br>
+                <input type="number" name="xpHas" id="xpHas" class="form-control"><br>
+            </div>
+                <input type="submit" class="btn btn-primary" value="Calculate!">
+        </form>
+        <br><br>
+        <!-- result (output) -->
+        <div class="card">
+            <div class="card-body">
+                <p id="result">Waiting on user input...</p>
+            </div>
+        </div>
+        <!-- processing -->
+        <script>
+            var form = document.getElementById('xp_calculator');
+            form.onsubmit = function(event) {
+                event.preventDefault();
+
+                var cog_type = 'cashbot';
+                var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
+
+                let mints = calculateInstances(cog_type, xpNeeds);
+                var bullMin = mints[0];
+                var bullMax = mints[1];
+                var dollarMin = mints[2];
+                var dollarMax = mints[3];
+                var coinMin = mints[4];
+                var coinMax = mints[5];
+
+                var result = document.getElementById('result');
+                result.innerHTML = 'You are <b>' + xpNeeds + ' Cogbucks</b> from promotion.<br><br>';
+
+                if (xpNeeds > 0) {
+                    /* If needed Cogbucks is more than the min # of Cogbucks rewarded by a Bullion mint,
+                    output two lists: one for the least of runs the user may need, and one for the most */
+                    if (xpNeeds > 1202) {
+                        result.innerHTML += 'At the <i>least</i>, you will need:<br><ul>';
+                        if (bullMin > 1) {
+                            result.innerHTML += '<li>' + bullMin + ' Bullion Mints</li>';
+                        }
+                        else if (bullMin == 1) {
+                            result.innerHTML += '<li>' + bullMin + ' Bullion Mint</li>';
+                        }
+                        if (dollarMin == 1) {
+                            result.innerHTML += '<li>' + dollarMin + ' Dollar Mint</li>';
+                        }
+                        if (coinMin == 1) {
+                            result.innerHTML += '<li>' + coinMin + ' Coin Mint</li>';
+                        }
+                        result.innerHTML += '<ul>';
+
+                        result.innerHTML += 'At the <i>most</i>, you will need:<br><ul>';
+                        if (bullMax > 1) {
+                            result.innerHTML += '<li>' + bullMax + ' Bullion Mints</li>';
+                        }
+                        else if (bullMax == 1) {
+                            result.innerHTML += '<li>' + bullMax + ' Bullion Mint</li>';
+                        }
+                        if (dollarMax == 1) {
+                            result.innerHTML += '<li>' + dollarMax + ' Dollar Mint</li>';
+                        }
+                        if (coinMax == 1) {
+                            result.innerHTML += '<li>' + coinMax + ' Coin Mint</li>';
+                        }
+                        result.innerHTML += '<ul>';
+                    }
+                    /* Otherwise, if it's definitely possible to get all the xp in one run,
+                    then only output the most possibly needed, to avoid the risk of the user
+                    needing to do multiple runs unnecessarily */
+                    else {
+                        result.innerHTML += 'You will need ';
+                        if (bullMax == 1) {
+                            result.innerHTML += bullMax + ' Bullion Mint.</li>';
+                        }
+                        if (dollarMax == 1) {
+                            result.innerHTML += dollarMax + ' Dollar Mint.</li>';
+                        }
+                        if (coinMax == 1) {
+                            result.innerHTML += coinMax + ' Coin Mint.</li>';
+                        }
+                    }
+
+                }
+                else {
+                    result.innerHTML += 'Don\'t be a turkey!'
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>
