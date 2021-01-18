@@ -23,7 +23,7 @@ function calculateInstances (cog_type, xpNeeds) {
     }
     /* Cashbot is a special case, due to the instances not rewarding a consistent amount of xp each run.
     Because of this, the program cannot guarantee an exact # and uses the given xp range to offer both min and max possibly needed. */
-    else if (cog_type = "cashbot") {
+    else if (cog_type == "cashbot") {
         /* Storing the original value of needed XP so we can use it again later */
         xpNeedsCopy = xpNeeds;
 
@@ -38,11 +38,11 @@ function calculateInstances (cog_type, xpNeeds) {
             xpNeeds -= 1496;
         }
         if (xpNeeds > 544) {
-            dollarsMin += 1;
+            dollarsMin = 1;
             xpNeeds -= 1004;
         }
         else if (xpNeeds > 0) {
-            coinsMin += 1;
+            coinsMin = 1;
             xpNeeds -= 544;
         }
 
@@ -59,17 +59,17 @@ function calculateInstances (cog_type, xpNeeds) {
             xpNeeds -= 1202;
         }
         if (xpNeeds > 356) {
-            dollarsMax += 1;
+            dollarsMax = 1;
             xpNeeds -= 679;
         }
         else if (xpNeeds > 0) {
-            coinsMax += 1;
+            coinsMax = 1;
             xpNeeds -= 356;
         }
 
         return [bullionsMin, bullionsMax, dollarsMin, dollarsMax, coinsMin, coinsMax];
     }
-    else if (cog_type = "lawbot") {
+    else if (cog_type == "lawbot") {
         var officeD = 0;
         var officeC = 0;
         var officeB = 0;
@@ -80,21 +80,21 @@ function calculateInstances (cog_type, xpNeeds) {
             xpNeeds -= 1842;
         }
         if (xpNeeds > 944) {
-            officeC += 1;
+            officeC = 1;
             xpNeeds -= 1370;
         }
         else if (xpNeeds > 564) {
-            officeB += 1;
+            officeB = 1;
             xpNeeds -= 944;
         }
         else if (xpNeeds > 0) {
-            officeA += 1;
+            officeA = 1;
             xpNeeds -= 564;
         }
 
         return [officeD, officeC, officeB, officeA];
     }
-    else if (cog_type = "bossbot") {
+    else if (cog_type == "bossbot") {
         var backNines = 0;
         var middleSixes = 0;
         var frontThrees = 0;
