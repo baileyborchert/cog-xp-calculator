@@ -104,11 +104,11 @@ function calculateInstances (cog_type, xpNeeds) {
             xpNeeds -= 3350;
         }
         if (xpNeeds > 764) {
-            middleSixes += 1;
+            middleSixes = 1;
             xpNeeds -= 1874;
         }
         else if (xpNeeds > 0) {
-            frontThrees += 1;
+            frontThrees = 1;
             xpNeeds -= 764;
         }
 
