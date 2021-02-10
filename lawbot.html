@@ -52,17 +52,19 @@
                 var cog_type = 'lawbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                let offices = calculateInstances(cog_type, xpNeeds);
-                var officeD = offices[0];
-                var officeC = offices[1];
-                var officeB = offices[2];
-                var officeA = offices [3];
+                if (xpNeeds <= 14400) {
+                    let offices = calculateInstances(cog_type, xpNeeds);
+                    var officeD = offices[0];
+                    var officeC = offices[1];
+                    var officeB = offices[2];
+                    var officeA = offices [3];
+                }
 
                 var result = document.getElementById('result');
                 result.innerHTML = 'You are <b>' + xpNeeds + ' Jury Notices</b> from promotion.<br><br>';
 
 
-                if (xpNeeds > 0) {
+                if (0 < xpNeeds && xpNeeds <= 14400) {
                     result.innerHTML += 'You need:<br><ul>';
                     if (officeD > 1) {
                         result.innerHTML += '<li>' + officeD + ' Office D\'s</li>';
@@ -83,7 +85,7 @@
                     result.innerHTML += '<ul>';
                 }
                 else {
-                    result.innerHTML += 'Don\'t be a turkey!'
+                    result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'
                 }
             }
         </script>

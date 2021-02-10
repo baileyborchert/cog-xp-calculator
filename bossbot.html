@@ -52,15 +52,17 @@
                 var cog_type = 'bossbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                let golfCourses = calculateInstances(cog_type, xpNeeds);
-                var backNines = golfCourses[0];
-                var middleSixes = golfCourses[1];
-                var frontThrees = golfCourses[2];
+                if (xpNeeds <= 23300) {
+                    let golfCourses = calculateInstances(cog_type, xpNeeds);
+                    var backNines = golfCourses[0];
+                    var middleSixes = golfCourses[1];
+                    var frontThrees = golfCourses[2];
+                }
 
                 var result = document.getElementById('result');
                 result.innerHTML = 'You are <b>' + xpNeeds + ' Stock Options</b> from promotion.<br><br>';
 
-                if (xpNeeds > 0) {
+                if (0 < xpNeeds && xpNeeds <= 23300) {
                     result.innerHTML += 'You need:<br><ul>';
                     if (backNines > 1) {
                         result.innerHTML += '<li>' + backNines + ' Back Nines</li>';
@@ -78,7 +80,7 @@
                     result.innerHTML += '<ul>';
                 }
                 else {
-                    result.innerHTML += 'Don\'t be a turkey!'
+                    result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'
                 }
             }
         </script>

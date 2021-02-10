@@ -53,18 +53,20 @@
                 var cog_type = 'cashbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                let mints = calculateInstances(cog_type, xpNeeds);
-                var bullMin = mints[0];
-                var bullMax = mints[1];
-                var dollarMin = mints[2];
-                var dollarMax = mints[3];
-                var coinMin = mints[4];
-                var coinMax = mints[5];
+                if (xpNeeds <= 8900) {
+                    let mints = calculateInstances(cog_type, xpNeeds);
+                    var bullMin = mints[0];
+                    var bullMax = mints[1];
+                    var dollarMin = mints[2];
+                    var dollarMax = mints[3];
+                    var coinMin = mints[4];
+                    var coinMax = mints[5];
+                }
 
                 var result = document.getElementById('result');
                 result.innerHTML = 'You are <b>' + xpNeeds + ' Cogbucks</b> from promotion.<br><br>';
 
-                if (xpNeeds > 0) {
+                if (0 < xpNeeds && xpNeeds <= 8900) {
                     /* If needed Cogbucks is more than the min # of Cogbucks rewarded by a Bullion mint,
                     output two lists: one for the least of runs the user may need, and one for the most */
                     if (xpNeeds > 1202) {
@@ -116,7 +118,7 @@
 
                 }
                 else {
-                    result.innerHTML += 'Don\'t be a turkey!'
+                    result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'
                 }
             }
         </script>

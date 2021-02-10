@@ -52,14 +52,16 @@
                 var cog_type = 'sellbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                let factories = calculateInstances(cog_type, xpNeeds);
-                var longs = factories[0];
-                var shorts = factories[1];
+                if (xpNeeds <= 5500) {
+                    let factories = calculateInstances(cog_type, xpNeeds);
+                    var longs = factories[0];
+                    var shorts = factories[1];
+                }
 
                 var result = document.getElementById('result');
                 result.innerHTML = 'You are <b>' + xpNeeds + ' Merits</b> from promotion.<br><br>';
 
-                if (xpNeeds > 0) {
+                if (0 < xpNeeds && xpNeeds <= 5500) {
                     result.innerHTML += 'You need ';
 
                     if (longs > 1) {
@@ -83,7 +85,7 @@
                     result.innerHTML += '.';
                 }
                 else {
-                    result.innerHTML += 'Don\'t be a turkey!'
+                    result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'
                 }
             }
         </script>
