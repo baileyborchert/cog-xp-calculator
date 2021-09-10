@@ -1,10 +1,35 @@
 /* Calculate difference between total xp needed and the xp a user currently has,
 which will be inputted through an HTML form */
-function calculateXpDifference (xpTotal, xpHas) {
-    var xpNeeds = xpTotal - xpHas;
-    return xpNeeds;
+const calculateXpDifference = (xpTotal, xpHas) => xpTotal - xpHas;
+
+class CogHQ {
+    constructor(instanceName, xpName, xpAmount, maxNeeded) {
+        this.instanceName = instanceName;
+        this.xpName = xpName;
+        this.xpAmount = xpAmount;
+        this.maxNeeded = maxNeeded;
+    }
+    validateXpInput(xpNeeds) {
+        return (xpNeeds > 0 && xpNeeds <= this.maxNeeded ? true : false);
+    }
+    calculateInstances(xpNeeds) {
+        //TODO: add if statement to check if the instance's XP amount is an array (Cashbot only)
+        
+        // While xp needed is greater than what the second-highest instance rewards
+        while (xpNeeds > Object.values(this.xpAmount.at(-2))[0]) {
+            // do something
+        }
+    }
 }
 
+// Create an Instance object for each cog type
+const Sellbot = new CogHQ('Factory', 'Merit', [{short: 480}, {long: 776}], 5500);
+const Cashbot = new CogHQ('Mint', 'Cogbuck', [{Coin: [356, 544]}, {Dollar: [679, 1004]}, {Bullion: [1202, 1496]}], 8900);
+const Lawbot = new CogHQ('Office', 'Jury Notice', [{A: 564}, {B: 944}, {C: 1370}, {D: 1842}], 14400);
+const Bossbot = new CogHQ('golf course', 'Stock Option', [{'Front Three': 764}, {'Middle Six': 1984}, {'Back Nine': 3300}], 23300);
+
+// Old code below this line
+// --------------------------------------------------------------------------
 function calculateInstances (cog_type, xpNeeds) {
     if (cog_type == "sellbot") {
         var longs = 0;
