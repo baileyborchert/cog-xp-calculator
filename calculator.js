@@ -3,30 +3,60 @@ which will be inputted through an HTML form */
 const calculateXpDifference = (xpTotal, xpHas) => xpTotal - xpHas;
 
 class CogHQ {
-    constructor(instanceName, xpName, xpAmount, maxNeeded) {
-        this.instanceName = instanceName;
-        this.xpName = xpName;
-        this.xpAmount = xpAmount;
-        this.maxNeeded = maxNeeded;
+    constructor(facilityName, xpName, xpAmount, maxNeeded) {
+        this._facilityName = facilityName;
+        this._xpName = xpName;
+        this._xpAmount = xpAmount;
+        this._maxNeeded = maxNeeded;
     }
+
+    // Returns an array of objects that each represent a facility of the Cog HQ
+    get xpAmountArray() {
+        return Object.values(this._xpAmount);
+    }
+
+    /* Gets a specific xp amount based on index in xpAmountArray.
+    This will return a number if the xp amount is static,
+    and an array of a min & max number if random. */
+    getXpAmountByIndex(index) {
+        return Object.values(this._xpAmount[index])[0];
+    }
+
+    /* Uses getXpAmountByIndex() to see if this Cog HQ rewards
+    a static XP amount (number value) for each facility */
+    checkIfStaticXpAmount() {
+        return (typeof this.getXpAmountByIndex(0) == 'number' ? true : false);
+    }
+
+    // Validates user input for XP needed, which should be greater than 0 and less than the Cog HQ's max
     validateXpInput(xpNeeds) {
-        return (xpNeeds > 0 && xpNeeds <= this.maxNeeded ? true : false);
+        return (xpNeeds > 0 && xpNeeds <= this._maxNeeded ? true : false);
     }
-    calculateInstances(xpNeeds) {
-        //TODO: add if statement to check if the instance's XP amount is an array (Cashbot only)
-        
-        // While xp needed is greater than what the second-highest instance rewards
-        while (xpNeeds > Object.values(this.xpAmount.at(-2))[0]) {
-            // do something
+
+    /* Takes needed xp (input by user) and returns how
+    many of each facility they need to grind the xp */
+    calculateFacilities(xpNeeds) {
+        if (this.validateXpInput(xpNeeds) == true) {
+            if (this.checkIfStaticXpAmount == true) {
+                // While xp needed is greater than what the second-highest facility rewards
+                while (xpNeeds > getXpAmountByIndex(1)) {
+                    // do something
+                }
+            } else {
+                // Cashbot logic goes here
+            }
+        }
+        else {
+            throw new Error('Your input is invalid. Don\'t be a turkey!');
         }
     }
 }
 
-// Create an Instance object for each cog type
-const Sellbot = new CogHQ('Factory', 'Merit', [{short: 480}, {long: 776}], 5500);
-const Cashbot = new CogHQ('Mint', 'Cogbuck', [{Coin: [356, 544]}, {Dollar: [679, 1004]}, {Bullion: [1202, 1496]}], 8900);
-const Lawbot = new CogHQ('Office', 'Jury Notice', [{A: 564}, {B: 944}, {C: 1370}, {D: 1842}], 14400);
-const Bossbot = new CogHQ('golf course', 'Stock Option', [{'Front Three': 764}, {'Middle Six': 1984}, {'Back Nine': 3300}], 23300);
+// Create an CogHQ object for each Cog type
+const Sellbot = new CogHQ('Factory', 'Merit', [{long: 776}, {short: 480}], 5500);
+const Cashbot = new CogHQ('Mint', 'Cogbuck', [{Bullion: [1202, 1496]}, {Dollar: [679, 1004]}, {Coin: [356, 544]}], 8900);
+const Lawbot = new CogHQ('Office', 'Jury Notice', [{D: 1842}, {C: 1370}, {B: 944}, {A: 564}], 14400);
+const Bossbot = new CogHQ('golf course', 'Stock Option', [{'Back Nine': 3300}, {'Middle Six': 1984}, {'Front Three': 764}], 23300);
 
 // Old code below this line
 // --------------------------------------------------------------------------
