@@ -17,13 +17,17 @@ class CogHQ {
 
     /* Gets a specific xp amount based on index in xpAmountArray.
     This will return a number if the xp amount is static,
-    and an array of a min & max number if random. */
+    and an array of a min & max number otherwise. */
     getXpAmountByIndex(index) {
         return Object.values(this._xpAmount[index])[0];
     }
 
+    getFacilityNameByIndex(index) {
+        return Object.keys(this._xpAmount[index])[0];
+    }
+
     /* Uses getXpAmountByIndex() to see if this Cog HQ rewards
-    a static XP amount (number value) for each facility */
+    a static xp amount (number value) for each facility */
     checkIfStaticXpAmount() {
         return (typeof this.getXpAmountByIndex(0) == 'number' ? true : false);
     }
@@ -37,13 +41,20 @@ class CogHQ {
     many of each facility they need to grind the xp */
     calculateFacilities(xpNeeds) {
         if (this.validateXpInput(xpNeeds) == true) {
-            if (this.checkIfStaticXpAmount == true) {
+            if (this.checkIfStaticXpAmount() == true) {
                 // While xp needed is greater than what the second-highest facility rewards
-                while (xpNeeds > getXpAmountByIndex(1)) {
-                    // do something
-                }
+                this.xpAmountArray.map((element, index) => {
+                    // not currently working:
+                    // while (xpNeeds > this.getXpAmountByIndex(index + 1)) {
+                    //     element += 1;
+                    //     xpNeeds -= this.getXpAmountByIndex(index);
+                    //    return console.log(this.getXpAmountByIndex(index + 1));
+                    // }
+                    console.log('Yay static xp');
+                });
             } else {
                 // Cashbot logic goes here
+                console.log('Yay Cashbot HQ');
             }
         }
         else {
