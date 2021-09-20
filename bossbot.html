@@ -49,35 +49,13 @@
             form.onsubmit = function(event) {
                 event.preventDefault();
 
-                var cog_type = 'bossbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                if (xpNeeds <= 23300) {
-                    let golfCourses = calculateInstances(cog_type, xpNeeds);
-                    var backNines = golfCourses[0];
-                    var middleSixes = golfCourses[1];
-                    var frontThrees = golfCourses[2];
-                }
-
                 var result = document.getElementById('result');
-                result.innerHTML = 'You are <b>' + xpNeeds + ' Stock Options</b> from promotion.<br><br>';
+                result.innerHTML = 'You are <b>' + xpNeeds + ' ' + Bossbot._xpName + 's</b> from promotion.<br><br>';
 
-                if (0 < xpNeeds && xpNeeds <= 23300) {
-                    result.innerHTML += 'You need:<br><ul>';
-                    if (backNines > 1) {
-                        result.innerHTML += '<li>' + backNines + ' Back Nines</li>';
-                    }
-                    else if (backNines == 1) {
-                        result.innerHTML += '<li>' + backNines + ' Back Nine</li>';
-                    }
-                    if (middleSixes == 1) {
-                        result.innerHTML += '<li>' + middleSixes + ' Middle Six</li>';
-                    }
-                    if (frontThrees == 1) {
-                        result.innerHTML += '<li>' + frontThrees + ' Front Three</li>';
-                    }
-
-                    result.innerHTML += '<ul>';
+                if (Bossbot.validateXpInput(xpNeeds) === true) {
+                    result.innerHTML += 'You need ' + JSON.stringify(Bossbot.calculateFacilities(xpNeeds));
                 }
                 else {
                     result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'

@@ -49,40 +49,13 @@
             form.onsubmit = function(event) {
                 event.preventDefault();
 
-                var cog_type = 'sellbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                if (xpNeeds <= 5500) {
-                    let factories = calculateInstances(cog_type, xpNeeds);
-                    var longs = factories[0];
-                    var shorts = factories[1];
-                }
-
                 var result = document.getElementById('result');
-                result.innerHTML = 'You are <b>' + xpNeeds + ' Merits</b> from promotion.<br><br>';
+                result.innerHTML = 'You are <b>' + xpNeeds + ' ' + Sellbot._xpName + 's</b> from promotion.<br><br>';
 
-                if (0 < xpNeeds && xpNeeds <= 5500) {
-                    result.innerHTML += 'You need ';
-
-                    if (longs > 1) {
-                        result.innerHTML += '<b>' + longs + ' long Factories</b>';
-                    }
-                    else if (longs == 1) {
-                        result.innerHTML += '<b>' + longs + ' long Factory</b>';
-                    }
-
-                    if (longs > 0 && shorts > 0) {
-                        result.innerHTML += ' and ';
-                    }
-
-                    if (shorts > 1) {
-                        result.innerHTML += '<b>' + shorts + ' short Factories</b>';
-                    }
-                    else if (shorts == 1) {
-                        result.innerHTML += '<b>' + shorts + ' short Factory</b>';
-                    }
-
-                    result.innerHTML += '.';
+                if (Sellbot.validateXpInput(xpNeeds) === true) {
+                    result.innerHTML += 'You need ' + JSON.stringify(Sellbot.calculateFacilities(xpNeeds));
                 }
                 else {
                     result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'

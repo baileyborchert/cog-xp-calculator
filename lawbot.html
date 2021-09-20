@@ -49,40 +49,13 @@
             form.onsubmit = function(event) {
                 event.preventDefault();
 
-                var cog_type = 'lawbot';
                 var xpNeeds = calculateXpDifference(form.xpTotal.value, form.xpHas.value);
 
-                if (xpNeeds <= 14400) {
-                    let offices = calculateInstances(cog_type, xpNeeds);
-                    var officeD = offices[0];
-                    var officeC = offices[1];
-                    var officeB = offices[2];
-                    var officeA = offices [3];
-                }
-
                 var result = document.getElementById('result');
-                result.innerHTML = 'You are <b>' + xpNeeds + ' Jury Notices</b> from promotion.<br><br>';
+                result.innerHTML = 'You are <b>' + xpNeeds + ' ' + Lawbot._xpName + 's</b> from promotion.<br><br>';
 
-
-                if (0 < xpNeeds && xpNeeds <= 14400) {
-                    result.innerHTML += 'You need:<br><ul>';
-                    if (officeD > 1) {
-                        result.innerHTML += '<li>' + officeD + ' Office D\'s</li>';
-                    }
-                    else if (officeD == 1) {
-                        result.innerHTML += '<li>' + officeD + ' Office D</li>';
-                    }
-                    if (officeC == 1) {
-                        result.innerHTML += '<li>' + officeC + ' Office C</li>';
-                    }
-                    if (officeB == 1) {
-                        result.innerHTML += '<li>' + officeB + ' Office B</li>';
-                    }
-                    if (officeA == 1) {
-                        result.innerHTML += '<li>' + officeA + ' Office A</li>';
-                    }
-
-                    result.innerHTML += '<ul>';
+                if (Lawbot.validateXpInput(xpNeeds) === true) {
+                    result.innerHTML += 'You need ' + JSON.stringify(Lawbot.calculateFacilities(xpNeeds));
                 }
                 else {
                     result.innerHTML += 'Your input is invalid. Don\'t be a turkey!'

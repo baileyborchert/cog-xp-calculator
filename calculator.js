@@ -33,39 +33,39 @@ class CogHQ {
     }
 
     // Validates user input for XP needed, which should be greater than 0 and less than the Cog HQ's max
-    validateXpInput(xpNeeds) {
-        return (xpNeeds > 0 && xpNeeds <= this._maxNeeded ? true : false);
+    validateXpInput(xpNeeded) {
+        return (xpNeeded > 0 && xpNeeded <= this._maxNeeded ? true : false);
     }
 
     /* Takes needed xp (input by user) and returns how
     many of each facility they need to grind the xp */
-    calculateFacilities(xpNeeds) {
-        if (this.validateXpInput(xpNeeds) == true) {
+    calculateFacilities(xpNeeded) {
+        if (this.validateXpInput(xpNeeded) == true) {
+            // Array that will be returned:
+            let facilitiesNeeded = [];
             if (this.checkIfStaticXpAmount() == true) {
-                console.log(this.xpAmountArray);
                 this.xpAmountArray.forEach((element, index) => {
-                    // Object that will be returned
-                    let facilitiesNeeds = [];
+                    let thisFacilityNeeded = 0;
                     // If this facility is anything BUT the least XP-rewarding for this Cog HQ...
                     if (index < this.xpAmountArray.length -1) {
                         // Check that xp needed is greater than what the next in the array rewards
-                        while (xpNeeds > this.getXpAmountByIndex(index + 1)) {
-                            console.log('We need a ' + this.getFacilityNameByIndex(index));
-                            xpNeeds -= this.getXpAmountByIndex(index);
-                            console.log('New xp needed: ' + xpNeeds)
+                        while (xpNeeded > this.getXpAmountByIndex(index + 1)) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index);
                         }
                     // If this facility is the least xp-rewarding for this Cog HQ, just check that we need > 0 xp
                     } else {
-                        while (xpNeeds > 0) {
-                            console.log('We need a ' + this.getFacilityNameByIndex(index));
-                            xpNeeds -= this.getXpAmountByIndex(index);
-                            console.log('New xp needed: ' + xpNeeds);
+                        while (xpNeeded > 0) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index);
                         }
                     }
+                    let thisFacilityName = this.getFacilityNameByIndex(index);
+                    facilitiesNeeded.push({[thisFacilityName]: thisFacilityNeeded});
                 });
+                return facilitiesNeeded;
             } else {
-                // Cashbot logic goes here
-                console.log('Yay Cashbot HQ');
+                //TODO: write logic for Cashbot (non-static xp)
             }
         }
         else {
