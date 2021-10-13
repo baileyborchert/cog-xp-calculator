@@ -65,17 +65,66 @@ class CogHQ {
                 });
                 return facilitiesNeeded;
             } else {
-                //TODO: write logic for Cashbot (non-static xp)
+                let minFacilitiesNeeded = [];
+                let maxFacilitiesNeeded = [];
+
+                // Calculate the array of the MIN number of each facility needed
+                this.xpAmountArray.forEach((element, index) => {
+                    let thisFacilityNeeded = 0;
+                    // If this facility is anything BUT the least XP-rewarding for this Cog HQ...
+                    if (index < this.xpAmountArray.length -1) {
+                        // Check that xp needed is greater than what the next in the array rewards
+                        while (xpNeeded > this.getXpAmountByIndex(index + 1)[0]) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index)[0];
+                            console.log('Now we need ' + thisFacilityNeeded + ' of ' + this.getFacilityNameByIndex(index));
+                        }
+                    // If this facility is the least xp-rewarding for this Cog HQ, just check that we need > 0 xp
+                    } else {
+                        while (xpNeeded > 0) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index[0]);
+                        }
+                    }
+                    let thisFacilityName = this.getFacilityNameByIndex(index);
+                    minFacilitiesNeeded.push({[thisFacilityName]: thisFacilityNeeded});
+                    
+                });
+
+                // Calculate the array of the MAX number of each facility needed
+                this.xpAmountArray.forEach((element, index) => {
+                    let thisFacilityNeeded = 0;
+                    // If this facility is anything BUT the least XP-rewarding for this Cog HQ...
+                    if (index < this.xpAmountArray.length -1) {
+                        // Check that xp needed is greater than what the next in the array rewards
+                        while (xpNeeded > this.getXpAmountByIndex(index + 1)[1]) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index)[1];
+                        }
+                    // If this facility is the least xp-rewarding for this Cog HQ, just check that we need > 0 xp
+                    } else {
+                        while (xpNeeded > 0) {
+                            thisFacilityNeeded += 1;
+                            xpNeeded -= this.getXpAmountByIndex(index)[1];
+                        }
+                    }
+                    let thisFacilityName = this.getFacilityNameByIndex(index);
+                    maxFacilitiesNeeded.push({[thisFacilityName]: thisFacilityNeeded});
+                });
+                
+                let facilitiesNeeded = [maxFacilitiesNeeded, minFacilitiesNeeded];
+                return facilitiesNeeded;
             }
         }
         else {
             throw new Error('Your input is invalid. Don\'t be a turkey!');
         }
     }
+
 }
 
 // Create an CogHQ object for each Cog type
 const Sellbot = new CogHQ('Factory', 'Merit', [{long: 776}, {short: 480}], 5500);
-const Cashbot = new CogHQ('Mint', 'Cogbuck', [{Bullion: [1202, 1496]}, {Dollar: [679, 1004]}, {Coin: [356, 544]}], 8900);
+const Cashbot = new CogHQ('Mint', 'Cogbuck', [{Bullion: [1496, 1202]}, {Dollar: [1004, 679]}, {Coin: [544, 356]}], 8900);
 const Lawbot = new CogHQ('Office', 'Jury Notice', [{D: 1842}, {C: 1370}, {B: 944}, {A: 564}], 14400);
 const Bossbot = new CogHQ('golf course', 'Stock Option', [{'Back Nine': 3300}, {'Middle Six': 1984}, {'Front Three': 764}], 23300);
